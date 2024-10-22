@@ -1,0 +1,384 @@
+EXPERIMENT 1:UNINFORMED
+
+Implement any one of the Uninformed search techniques
+import collections
+
+def bfs(graph, root):
+    visited, queue = set(), collections.deque([root])
+    visited.add(root)
+    
+    while queue:
+        # Dequeue a vertex from queue
+        vertex = queue.popleft()
+        print(str(vertex) + " ", end="")
+        
+        # Check all adjacent vertices
+        for neighbour in graph[vertex]:
+            if neighbour not in visited:
+                visited.add(neighbour)
+                queue.append(neighbour)
+
+if __name__ == "__main__":
+    graph = {0: [1, 2], 1: [2], 2: [3], 3: [1, 2]}
+    print("Following is Breadth First Traversal: ")
+    bfs(graph, 0)
+
+
+                  OR
+
+from collections import deque
+
+def bfs(graph, start, goal):
+    # Create a queue for BFS
+    queue = deque([[start]])
+    # Set to keep track of visited nodes
+    visited = set()
+
+    # Loop until the queue is empty
+    while queue:
+        # Dequeue the first path from the queue
+        path = queue.popleft()
+        # Get the last node from the path
+        node = path[-1]
+
+        # If this node is the goal, return the path
+        if node == goal:
+            return path
+
+        # If the node has not been visited yet
+        if node not in visited:
+            # Mark the node as visited
+            visited.add(node)
+
+            # Add new paths to the queue with all adjacent nodes
+            for adjacent in graph.get(node, []):
+                new_path = list(path)
+                new_path.append(adjacent)
+                queue.append(new_path)
+
+    # If no path is found, return None
+    return None
+
+# Example graph represented as an adjacency list
+graph = {
+    'A': ['B', 'C'],
+    'B': ['D', 'E'],
+    'C': ['F'],
+    'D': [],
+    'E': ['F'],
+    'F': []
+}
+
+# Perform BFS to find the shortest path from 'A' to 'F'
+start_node = 'A'
+goal_node = 'F'
+path = bfs(graph, start_node, goal_node)
+
+if path:
+    print("Shortest path:", path)
+else:
+    print("No path found")
+
+
+
+
+
+EXPERIMENT 2:INFORMED
+Implement any one of the Informed search techniques
+
+from queue import PriorityQueue
+
+# Number of vertices
+v = 14
+
+# Create a graph as an adjacency list
+graph = [[] for i in range(v)]
+
+# Best First Search algorithm
+def best_first_search(actual_Src, target, n):
+    visited = [False] * n
+    pq = PriorityQueue()
+    
+    # Start with the source node
+    pq.put((0, actual_Src))
+    visited[actual_Src] = True
+    
+    while not pq.empty():
+        # Get the node with the smallest cost
+        u = pq.get()[1]
+        print(u, end=" ")
+        
+        # If we reach the target node, exit
+        if u == target:
+            break
+        
+        # Explore neighbors
+        for v, c in graph[u]:
+            if not visited[v]:
+                visited[v] = True
+                pq.put((c, v))
+    print()
+
+# Function to add edges to the graph
+def addedge(x, y, cost):
+    graph[x].append((y, cost))
+    graph[y].append((x, cost))
+
+# Adding edges
+addedge(0, 1, 3)
+addedge(0, 2, 6)
+addedge(0, 3, 5)
+addedge(1, 4, 9)
+addedge(1, 5, 8)
+addedge(2, 6, 12)
+addedge(2, 7, 14)
+addedge(3, 8, 7)
+addedge(8, 9, 5)
+addedge(8, 10, 6)
+addedge(9, 11, 1)
+addedge(9, 12, 10)
+addedge(9, 13, 2)
+
+# Define source and target nodes
+source = 0
+target = 9
+
+# Run the Best First Search
+best_first_search(source, target, v)
+
+
+EXPERIMENT 3:LOCAL SEARCH(HILL CLIMBING)
+Implement any one of the Local Search techniques.(hill climbing)
+
+def findLocalMaxima(n, arr):
+    mx = []
+    
+    # Check the first element
+    if arr[0] > arr[1]:
+        mx.append(0)
+    
+    # Check the elements in the middle
+    for i in range(1, n - 1):
+        if arr[i - 1] < arr[i] > arr[i + 1]:
+            mx.append(i)
+    
+    # Check the last element
+    if arr[-1] > arr[-2]:
+        mx.append(n - 1)
+    
+    # Print the results
+    if len(mx) > 0:
+        print("Points of Local maxima are: ", end="")
+        print(*mx)
+    else:
+        print("There are no points of Local maxima.")
+        
+# Main function
+if __name__ == "__main__":
+    n = 9
+    arr = [10, 10, 15, 14, 13, 25, 5, 4, 3]
+    findLocalMaxima(n, arr)
+
+EXPERIMENT 4:
+Identify suitable Agent Architecture for virtual assistant
+Aim :- Identify suitable Agent Architecture for the problem
+Problem Statement :- Identify Agent architecture for Virtual assistants.
+Pseudo Code :-
+Initialize VirtualAssistant:
+Load profiles, NLP engine, task system
+Function HandleUserRequest(user_id, request):
+profile = GetUserProfile(user_id)
+goal = IdentifyGoal(ParseRequest(request))
+If IsKnownTask(goal):
+response = ExecuteTask(goal, profile)
+Else:
+response = LearnAndHandle(goal)
+UpdateUserProfile(user_id, request, response)
+return response
+Function ParseRequest(request):
+return NLPParser(request)
+Function IsKnownTask(goal):
+return CheckTaskDatabase(goal)
+Function ExecuteTask(goal, profile):
+Return TaskExecutor(goal, profile) # Handles specific tasks like setting reminders
+Function LearnAndHandle(goal):
+return LearnFromInteraction(goal)
+Function UpdateUserProfile(user_id, request, response):
+ModifyUserProfile(user_id, request, response)
+# Main loop
+For each user_id in ActiveUsers:
+response = HandleUserRequest(user_id, GetUserRequest(user_id))
+SendResponseToUser(user_id, response)
+Conclusion :- The virtual assistant system combines goal-based, utility-based, and learning agent
+models to handle user interactions efficiently. It parses requests, determines goals, executes tasks,
+and adapts through learning. This approach ensures personalized, dynamic responses and an
+evolving user experience.
+
+EXPERIMENT 5:
+Write simple programs using PROLOG as an AI programming Language(monkey banana)
+% Facts
+in_room(bananas).
+in_room(chair).
+in_room(monkey).
+clever(monkey).
+tall(chair).
+can_climb(monkey, chair).
+can_reach(monkey, bananas).
+
+% Rules
+can_get_bananas(Monkey) :-
+    in_room(bananas),
+    in_room(chair),
+    in_room(Monkey),
+    clever(Monkey),
+    can_climb(Monkey, chair),
+    can_reach(Monkey, bananas).
+
+% Query to check if the monkey can get the bananas
+can_monkey_get_bananas(Monkey) :- 
+    can_get_bananas(Monkey).
+
+QUERY:
+can_monkey_get_bananas(monkey).
+
+Write simple programs using PROLOG as an AI programming Language(8 puzzle problem)
+#8 puzzle problem
+% Main entry point for testing the plan
+test(Plan):-
+    write('Initial state:'), nl,
+    Init = [at(tile4,1), at(tile3,2), at(tile8,3), at(empty,4), at(tile2,5), at(tile6,6), at(tile5,7), at(tile1,8), at(tile7,9)],
+    write_sol(Init),
+    
+    Goal = [at(tile1,1), at(tile2,2), at(tile3,3), at(tile4,4), at(empty,5), at(tile5,6), at(tile6,7), at(tile7,8), at(tile8,9)],
+    nl, write('Goal state:'), nl,
+    write(Goal), nl, nl,
+    
+    solve(Init, Goal, Plan).
+
+% Solve the puzzle
+solve(State, Goal, Plan):-
+    solve(State, Goal, [], Plan).
+
+% Check if the current and destination tiles are a valid move
+is_movable(X1,Y1) :- 
+    (1 is X1 - Y1) ; 
+    (-1 is X1 - Y1) ; 
+    (3 is X1 - Y1) ; 
+    (-3 is X1 - Y1).
+
+% This predicate produces the plan. 
+solve(State, Goal, Plan, Plan):- 
+    is_subset(Goal, State), 
+    nl, 
+    write_sol(Plan).
+
+solve(State, Goal, Sofar, Plan):- 
+    act(Action, Preconditions, Delete, Add),
+    is_subset(Preconditions, State),
+    \+ member(Action, Sofar),
+    delete_list(Delete, State, Remainder),
+    append(Add, Remainder, NewState),
+    solve(NewState, Goal, [Action|Sofar], Plan).
+
+% Operators for the puzzle
+act(move(X, Y, Z), 
+    [at(X, Y), at(empty, Z), is_movable(Y, Z)], 
+    [at(X, Y), at(empty, Z)], 
+    [at(X, Z), at(empty, Y)]).
+
+% Utility predicates
+is_subset([H|T], Set):- 
+    member(H, Set),
+    is_subset(T, Set).
+is_subset([], _).
+
+delete_list([H|T], Curstate, Newstate):- 
+    remove(H, Curstate, Remainder),
+    delete_list(T, Remainder, Newstate).
+delete_list([], Curstate, Curstate).
+
+remove(X, [X|T], T).
+remove(X, [H|T], [H|R]):- 
+    remove(X, T, R).
+
+write_sol([]).
+write_sol([H|T]):- 
+    write_sol(T),
+    write(H), nl.
+
+append([H|T], L1, [H|L2]):- 
+    append(T, L1, L2).
+append([], L, L).
+
+member(X, [X|_]).
+member(X, [_|T]):- 
+    member(X, T).
+
+Query:test(Plan).
+
+
+Create a Bayesian Network for the given Problem Statement and draw inferences
+from it. (You can use any Belief and Decision Networks Tool for modeling Bayesian
+Networks)
+
+*****jupyter****
+
+# Install pgmpy and its dependencies in Jupyter Notebook
+!pip install pgmpy
+!pip install torch torchvision torchaudio
+
+# Verify installation by importing libraries
+try:
+    import pgmpy
+    import torch
+    print("pgmpy and torch are installed successfully!")
+except ImportError as e:from pgmpy.models import BayesianNetwork
+from pgmpy.factors.discrete import TabularCPD
+from pgmpy.inference import VariableElimination
+
+from pgmpy.models import BayesianNetwork
+from pgmpy.factors.discrete import TabularCPD
+from pgmpy.inference import VariableElimination
+
+# Step 1: Define the structure of the Bayesian Network
+model = BayesianNetwork([
+    ('B', 'A'),  # Burglary causes Alarm
+    ('E', 'A'),  # Earthquake causes Alarm
+    ('A', 'D'),  # Alarm causes David to call
+    ('A', 'S')   # Alarm causes Sophia to call
+])
+
+# Step 2: Define the Conditional Probability Distributions (CPDs)
+# Burglary CPD: P(B)
+cpd_b = TabularCPD(variable='B', variable_card=2, values=[[0.999], [0.001]])
+# Earthquake CPD: P(E)
+cpd_e = TabularCPD(variable='E', variable_card=2, values=[[0.998], [0.002]])
+# Alarm CPD: P(A | B, E)
+cpd_a = TabularCPD(variable='A', variable_card=2,
+                   values=[[0.999, 0.71, 0.06, 0.05],
+                           [0.001, 0.29, 0.94, 0.95]],
+                   evidence=['B', 'E'], evidence_card=[2, 2])
+# David's call CPD: P(D | A)
+cpd_d = TabularCPD(variable='D', variable_card=2,
+                   values=[[0.99, 0.3], [0.01, 0.7]],
+                   evidence=['A'], evidence_card=[2])
+# Sophia's call CPD: P(S | A)
+cpd_s = TabularCPD(variable='S', variable_card=2,
+                   values=[[0.95, 0.4], [0.05, 0.6]],
+                   evidence=['A'], evidence_card=[2])
+
+# Step 3: Add CPDs to the model
+model.add_cpds(cpd_b, cpd_e, cpd_a, cpd_d, cpd_s)
+
+# Check if the model is valid
+assert model.check_model()
+
+# Step 4: Perform inference
+inference = VariableElimination(model)
+
+# Step 5: Compute the probability P(A=True | B=False, E=False, D=True, S=True)
+result = inference.query(variables=['A'],  # Only query A
+                         evidence={'B': 0, 'E': 0, 'D': 1, 'S': 1})
+
+# Print the result
+print(result)
